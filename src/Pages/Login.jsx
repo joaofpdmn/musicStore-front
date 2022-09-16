@@ -18,7 +18,8 @@ export default function Login() {
         e.preventDefault();
         const body = {
             email: email,
-            password: password
+            password: password,
+            token: ''
         };
         const loginPromise = loginRequest(body);
         loginPromise.then(response => {
@@ -29,7 +30,6 @@ export default function Login() {
             navigate(`/home`);
         }).catch(e => {
             alert('Login inválido!');
-            window.location.reload();
         });
     }
 

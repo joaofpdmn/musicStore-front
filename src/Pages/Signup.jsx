@@ -39,8 +39,8 @@ export default function SignUp() {
             <form onSubmit={handleSubmit}>
                 <Input placeholder="Nome" type="text" onChange={e => setName(e.target.value)} />
                 <Input placeholder="Email" type="email" onChange={e => setEmail(e.target.value)} />
-                <Input placeholder="Senha" type="text" onChange={e => setPassword(e.target.value)} />
-                <Input placeholder="Repita a senha" type="text" onChange={e => setRepeatPassword(e.target.value)} />
+                <Input placeholder="Senha" type="password" onChange={e => setPassword(e.target.value)} />
+                <Input placeholder="Repita a senha" type="password" onChange={e => setRepeatPassword(e.target.value)} />
                 <Input placeholder="Número do cartão" type="text" onChange={e => setCardNumber(e.target.value)} />
                 <Padding value={10} />
                 <Button type="submit" color="#32834c">Inscrever-se</Button>
