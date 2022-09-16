@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const APIprefix = 'http://music-store-driven.herokuapp.com';
+const APIprefix = 'https://music-store-driven.herokuapp.com';
 
 function loginRequest(body){
     return axios.post(`${APIprefix}/login`, body);
