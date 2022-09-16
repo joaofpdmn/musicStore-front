@@ -29,6 +29,7 @@ export default function Login() {
             alert('Login realizado com sucesso!');
             navigate(`/home`);
         }).catch(e => {
+            console.log(e);
             alert('Login inválido!');
         });
     }
