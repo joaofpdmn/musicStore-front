@@ -8,6 +8,7 @@
         height: 100vh;
         background-color: #dbdbdb;
         box-sizing:border-box;
+        justify-content: center;
     }
     form{
         display: flex;
