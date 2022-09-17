@@ -10,7 +10,19 @@ function signUpRequest(body){
     return axios.post(`${APIprefix}/signup`, body);
 }
 
+function getProducts(){
+    const promise=axios.get(`${BaseURL}/list`);
+    return promise;
+}
+
+function getSearch(e){
+    const promise=axios.get(`${BaseURL}/list/${e}`);
+    return promise;
+}
+
 export { 
     loginRequest,
     signUpRequest,
+    getProducts,
+    getSearch,
 }
