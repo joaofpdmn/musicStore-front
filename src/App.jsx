@@ -7,7 +7,7 @@ import Login from "./Pages/Login";
 import SignUp from "./Pages/Signup";
 import WelcomePage from "./Pages/WelcomePage";
 import { getUserData } from "./Services/UserData";
-
+import MyRequests from './Pages/MyRequests'
 
 function App() {
   const [login, setLogin] = useState(getUserData());
@@ -21,6 +21,7 @@ function App() {
           <Route path='/home' element={<WelcomePage />} />
           <Route path='/cart' element={<Cart />} />
           <Route path='/checkout' element={ <Checkout /> } />
+          <Route path='/requests' element={ <MyRequests /> } />
         </Routes>
       </UserContext.Provider>
     </BrowserRouter>

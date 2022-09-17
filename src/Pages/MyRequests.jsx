@@ -2,14 +2,13 @@ import React, { useState } from "react"
 import Button from "../components/Button"
 import {  AiOutlineDelete, AiOutlineArrowLeft, AiFillCheckSquare } from 'react-icons/ai';
 import { BsChevronDown } from 'react-icons/bs';
-import { IoIosAddCircleOutline} from 'react-icons/io';
 import  {RiCheckboxBlankFill} from 'react-icons/ri'
 import Img  from '../assets/images/exemplo.png'
 import Swal from 'sweetalert2'
 import { Link } from "react-router-dom";
 import * as C from '../Common/CartStyles'
-
-export default function Cart(){
+import Styled from 'styled-components';
+export default function MyRequests(){
      
     const [ summary, setSummary] = useState( [
         {id: '1', name: 'Air pods max by Apple', price: "150", image:Img},
@@ -24,18 +23,18 @@ export default function Cart(){
             
         function FeleteItem (){
             Swal.fire({
-                title: 'Gostaria de excluir esse item?',
-                text: "Você poderá adicioná-lo novamente",
+                title: 'Gostaria de cancelar esse pedido?',
+                
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Sim, deletar item!'
+                confirmButtonText: 'Sim, cancelar pedido!'
               }).then((result) => {
                 if (result.isConfirmed) {
                   Swal.fire(
                     'Deleted!',
-                    'Item excluído com Sucesso.',
+                    'pedido cancelado com Sucesso.',
                     'success'
                                   
                   )
@@ -45,8 +44,7 @@ export default function Cart(){
               })
           
         }
-        const [isOpen, setIsOpen] = useState(false);
-        const toggle = () => setIsOpen(!isOpen);
+       
         
         
       
@@ -55,18 +53,14 @@ export default function Cart(){
             
              <C.DivSummary>
                 <C.DivCheckboxImg>
-                {isOpen ? <AiFillCheckSquare   className="check" onClick={ toggle } /> : <RiCheckboxBlankFill className="Nocheck" onClick={toggle} />}
-               
                     <img src={props.image} />
                 </C.DivCheckboxImg>
                 <C.DivName>               
                         <p>{props.name} </p>     
                         <p>$ {props.price}</p>                                                                                                    
                 </C.DivName>  
-                <AiOutlineDelete onClick={ FeleteItem } className="delete" 
-                    
-                 />
-             
+                
+             <div onClick={ FeleteItem } className="delete">excluir</div>
               </C.DivSummary> 
              
             </>
@@ -82,36 +76,17 @@ export default function Cart(){
     setIsMenu(!isMenu)
   
    }
-   const [newAddress, setNewAddress ] = useState([])
-   console.log(newAddress)
-  async function btt ( ){
-    const { value: formValues } = await Swal.fire({
-        title: 'Multiple inputs',
-        html:
-          '<input required placeholder="Digite seu endereço" id="swal-input1" class="swal2-input">' 
-           ,
-        focusConfirm: false,
-        preConfirm: () => {
-            const address =   
-              (document.getElementById('swal-input1').value)
-              setNewAddress(address)
-          return address
-        }
-      })
-      
-      if (formValues) {
-        Swal.fire(JSON.stringify(formValues))
-      }
-   }
+   
 
    
     return (
         <C.Container>
             <C.DivCart> 
                 <C.DivDisplayed>
-                    <AiOutlineArrowLeft/>
-                    <p>Seu Carrinho</p>
-                    
+                  <Link to={'/cart'}>
+                   <AiOutlineArrowLeft className="back"/>
+                  </Link>  
+                    <p>Seus Pedidos</p>
                 </C.DivDisplayed >
                 {/* <GiHamburgerMenu onClick={showMenu} className="car"/>  */}         
                 <div className="index" onClick={showMenu}>
@@ -122,9 +97,7 @@ export default function Cart(){
                        <Link to={'/'}>
                        <li>Home</li>
                        </Link> 
-                       <Link to={'/requests'}>
-                         <li>Pedidos</li>
-                       </Link> 
+                        <li>Pedidos</li>
                         <li>Pagamentos</li>
                         <li>Endereços</li>
                         <li>Cupons</li>
@@ -133,22 +106,17 @@ export default function Cart(){
 
             </C.DivCart >
             <C.DivAddress>
-               <p>Endereço de Entrega:</p>
-               {newAddress}
-                
-               
-              
-               <IoIosAddCircleOutline className="add" onClick={btt}/>
+               <p>Entragar no Endereço:</p>
+               <p>Rua x Casa y Cep xxxyy-zz</p>
+               <BsChevronDown  />
                
             </C.DivAddress>
             <>
             { summary.map(i => <Summary name={i.name} image={i.image} price={i.price} id={i.id}  />) } 
             </ >
             <C.DivBase>                
-                <C.DivBaseTotal>
-                    <p>Total</p> <p>$ 00.00</p>
-                </C.DivBaseTotal>
-                <Button />
+                
+                 
             </C.DivBase>
            
         </C.Container>
