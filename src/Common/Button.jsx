@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 const Button = styled.button` 
 display: flex;
-width: 80%;
+width: 90%;
 height: 50px;
 background-color: ${props => props.color};
 border-radius: 5px;

@@ -3,12 +3,10 @@
     body{
         display: flex;
         flex-direction: column;
-        align-items: center;
         width: 100vw;
         height: 100vh;
         background-color: #dbdbdb;
         box-sizing:border-box;
-        justify-content: center;
     }
     form{
         display: flex;
@@ -16,11 +14,10 @@
         width: 100%;
         align-items: center;
     }
-    form{
+    .row{
         display: flex;
-        flex-direction: column;
-        width: 100%;
-        align-items: center;
+        flex-direction: row;
+        justify-content: space-between;
     }
 
 }
