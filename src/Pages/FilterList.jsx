@@ -15,6 +15,7 @@ export default function FilterList(){
 
     useEffect(()=>{getSearch(params.search).then((res)=>{
         setProduct(res.data)
+        
     }).catch((res)=>{console.log(res)});},[]);
     console.log(cart);
     if(product.length===0){
