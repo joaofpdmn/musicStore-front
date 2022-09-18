@@ -25,4 +25,5 @@ export {
     signUpRequest,
     getProducts,
     getSearch,
+    checkoutRequest
 }
