@@ -79,7 +79,7 @@ export default function RouteList(){
 
 const DivRouteList=styled.div`
  margin: auto;
- width: 390px;
+ width: 100%;
  height: 100vh; 
  background-color: #fff;
  overflow-y: scroll;
@@ -92,7 +92,7 @@ const InputSearch=styled.input`
  outline: none;
 `
 const Top=styled.div`
- width: 390px;
+ width: 90%;
  height: 80px;
  background-color: #fff;
  padding: 0 15px;
@@ -105,7 +105,6 @@ const Top=styled.div`
  ion-icon{
  font-size:150%;
  cursor: pointer;
- 
  }
 `
 const DivSearch=styled.div`
@@ -175,7 +174,8 @@ const LittleBox=styled.div`
  display: flex;
  flex-direction: column;
  justify-content: space-between;
- padding: 13px;
+ box-sizing: border-box;
+ padding: 10px;
 `
  
 const LittleBall=styled.div`
@@ -214,6 +214,7 @@ const ButtonRemove=styled.div`
  }
 `
 const Buttons=styled.div`
+ width:150px;
  display: flex;
  justify-content: space-between;
-`
+ `
