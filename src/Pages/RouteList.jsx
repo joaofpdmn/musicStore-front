@@ -1,8 +1,8 @@
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import { getProducts } from "../Services/UserServices.jsx";
- 
+ import{IoIosLogIn} from 'react-icons/io'
 export default function RouteList(){
  const navigate=useNavigate();
  const [search,setSearch]=useState("");
@@ -10,12 +10,17 @@ export default function RouteList(){
  const [cart,setCart]=useState([]);
  const [itens,setItens]=useState(cart.length);
  
- 
+ localStorage.setItem("cart", JSON.stringify(cart))
+  
+
+
+
  useEffect(()=>{getProducts().then((res)=>{
  setProduct(res.data)
- console.log(res.data)
+ 
  }).catch((res)=>{console.log(res)});},[]);
  console.log(cart);  
+
  function remove(e){
  let i=cart.indexOf(e);
  // console.log("find",cart.find((el)=>(el===e)));
@@ -38,16 +43,22 @@ export default function RouteList(){
  function searchItem(){
  navigate(`/list/${search}`);
  }
+ function showCart (){
+  navigate('/cart');
+ }
  
  return (<DivRouteList>
  <Top>
- <ion-icon name="arrow-back-outline"></ion-icon>
+{/*  <ion-icon name="arrow-back-outline"></ion-icon> */}
  <DivSearch>
  <ion-icon name="search-outline" onClick={()=>{searchItem()}}></ion-icon>
  <InputSearch placeholder="Search" onChange={handleForm}></InputSearch>
  </DivSearch>
  <LittleBall><h1>{itens}</h1></LittleBall>
- <ion-icon name="cart-outline"></ion-icon>
+ <IoIosLogIn className="login"/>
+ <ion-icon onClick={showCart} name="cart-outline"></ion-icon>
+ 
+
  </Top>
  
  <Container>
@@ -94,6 +105,7 @@ const Top=styled.div`
  ion-icon{
  font-size:150%;
  cursor: pointer;
+ 
  }
 `
 const DivSearch=styled.div`

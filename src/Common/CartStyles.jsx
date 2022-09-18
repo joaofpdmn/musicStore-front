@@ -231,6 +231,11 @@ export const DivCheckboxImg =  Styled.div`
         border:none;
         color: #E5E5E5;
      }
+     .carImage{
+      width: 82px;
+      height: 76px;
+      border-radius: 4px;
+     }
     
 `
 

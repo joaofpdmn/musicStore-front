@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect, useContext } from "react"
 import Button from "../components/Button"
 import {  AiOutlineDelete, AiOutlineArrowLeft, AiFillCheckSquare } from 'react-icons/ai';
 import { BsChevronDown } from 'react-icons/bs';
@@ -8,15 +8,35 @@ import Swal from 'sweetalert2'
 import { Link } from "react-router-dom";
 import * as C from '../Common/CartStyles'
 import Styled from 'styled-components';
+import axios from 'axios';
+import UserContext from "../Context/UserContext";
 export default function MyRequests(){
-     
+    const { login } = useContext(UserContext);
+    const token = login.token
+      
     const [ summary, setSummary] = useState( [
-        {id: '1', name: 'Air pods max by Apple', price: "150", image:Img},
+/*         {id: '1', name: 'Air pods max by Apple', price: "150", image:Img},
         {id: "2", name: 'Air pods max by Apple', price: "200", image:Img},
-        {id: "3", name: 'Air pods max by Apple', price: "500", image:Img},     
+        {id: "3", name: 'Air pods max by Apple', price: "500", image:Img},  */    
         ])
-    
         
+
+         
+        const config = {
+            headers: {
+            authorization: `Bearer${token}`,
+            name: login.name,
+            email: login.email
+            },
+          };
+        useEffect(()=>{
+            axios.get('http://localhost:5000/cart', config)
+            .then((res) =>{   
+                setSummary(res.data)
+            })
+            .catch((err) =>{
+            })
+          },[token])
     let remove = []
     
         function Summary (props){
@@ -53,14 +73,14 @@ export default function MyRequests(){
             
              <C.DivSummary>
                 <C.DivCheckboxImg>
-                    <img src={props.image} />
+                    <img className="carImage" src={props.image} />
                 </C.DivCheckboxImg>
                 <C.DivName>               
                         <p>{props.name} </p>     
                         <p>$ {props.price}</p>                                                                                                    
                 </C.DivName>  
                 
-             <div onClick={ FeleteItem } className="delete">excluir</div>
+             <button onClick={()=> alert('não foi ṕossivel')}>Cancelar Pedido</button>
               </C.DivSummary> 
              
             </>
@@ -98,7 +118,7 @@ export default function MyRequests(){
                        <li>Home</li>
                        </Link> 
                         <li>Pedidos</li>
-                        <li>Pagamentos</li>
+                        <li onClick={()=> navigate('/checkout')}>Pagamentos</li>
                         <li>Endereços</li>
                         <li>Cupons</li>
                     </ul>
@@ -112,7 +132,13 @@ export default function MyRequests(){
                
             </C.DivAddress>
             <>
-            { summary.map(i => <Summary name={i.name} image={i.image} price={i.price} id={i.id}  />) } 
+            { summary.map((i, index) => (
+                < span key={index} >{i.products.map((item, index)=>(
+                    <Summary key={index} name={item.nameLower} image={item.image} price={item.value} id={item.id}
+           
+            />
+                ))}</span>
+            )) } 
             </ >
             <C.DivBase>                
                 

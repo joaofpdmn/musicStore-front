@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+ 
 import Button from "../components/Button"
 import {  AiOutlineDelete, AiOutlineArrowLeft, AiFillCheckSquare } from 'react-icons/ai';
 import { BsChevronDown } from 'react-icons/bs';
@@ -6,22 +6,43 @@ import { IoIosAddCircleOutline} from 'react-icons/io';
 import  {RiCheckboxBlankFill} from 'react-icons/ri'
 import Img  from '../assets/images/exemplo.png'
 import Swal from 'sweetalert2'
-import { Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import * as C from '../Common/CartStyles'
-
+import { useContext, useState } from "react";
+import UserContext from "../Context/UserContext";
 export default function Cart(){
-     
-    const [ summary, setSummary] = useState( [
-        {id: '1', name: 'Air pods max by Apple', price: "150", image:Img},
+  const { login } = useContext(UserContext);
+  
+  const navigate=useNavigate();
+     const [ summary, setSummary] = useState( [])
+     /*    {id: '1', name: 'Air pods max by Apple', price: "150", image:Img},
         {id: "2", name: 'Air pods max by Apple', price: "200", image:Img},
         {id: "3", name: 'Air pods max by Apple', price: "500", image:Img},     
-        ])
-    
-        
-    let remove = []
+        ])  */
+       const data = localStorage.getItem("cart");
+       const summaryData = JSON.parse(data);
+       
+ const teste = summaryData.map((i)=> i.value.replace(',', '.'))
+ 
+ const plus = teste.reduce(getTotal, 0);
+ function getTotal(total, item) {
+  return Number(total) + Number(item) ;
+ }
+ 
+ 
+
+     const showUser = {
+      user: [
+      {
+      name: login.name,
+      email: login.email}
+      ],
+      propucts: summaryData }
+         
+      
     
         function Summary (props){
-            
+           
         function FeleteItem (){
             Swal.fire({
                 title: 'Gostaria de excluir esse item?',
@@ -39,9 +60,11 @@ export default function Cart(){
                     'success'
                                   
                   )
-                  const filterId = summary.filter((item)=> item.id !== props.id)
+                  const filterId = summaryData.filter((item)=> item._id !== props.id)
                   setSummary(filterId)
+                 
                 }
+                
               })
           
         }
@@ -56,8 +79,8 @@ export default function Cart(){
              <C.DivSummary>
                 <C.DivCheckboxImg>
                 {isOpen ? <AiFillCheckSquare   className="check" onClick={ toggle } /> : <RiCheckboxBlankFill className="Nocheck" onClick={toggle} />}
-               
-                    <img src={props.image} />
+                 
+                    <img className="carImage" src={props.image} />
                 </C.DivCheckboxImg>
                 <C.DivName>               
                         <p>{props.name} </p>     
@@ -83,7 +106,7 @@ export default function Cart(){
   
    }
    const [newAddress, setNewAddress ] = useState([])
-   console.log(newAddress)
+   
   async function btt ( ){
     const { value: formValues } = await Swal.fire({
         title: 'Multiple inputs',
@@ -104,12 +127,16 @@ export default function Cart(){
       }
    }
 
+  function home (){
+    navigate('/cart')
+  }
    
+  
     return (
         <C.Container>
             <C.DivCart> 
                 <C.DivDisplayed>
-                    <AiOutlineArrowLeft/>
+                    <AiOutlineArrowLeft  onClick={ ()=>{navigate('/') }}/>
                     <p>Seu Carrinho</p>
                     
                 </C.DivDisplayed >
@@ -122,10 +149,16 @@ export default function Cart(){
                        <Link to={'/'}>
                        <li>Home</li>
                        </Link> 
-                       <Link to={'/requests'}>
-                         <li>Pedidos</li>
-                       </Link> 
-                        <li>Pagamentos</li>
+                       
+                         <li onClick={()=> {
+                          if(!login.token){
+                            alert("faça login");
+                            return;
+                          }
+                          navigate('/requests')}
+                          }>Pedidos</li>
+                       
+                        <li onClick={()=> navigate('/checkout')}>Pagamentos</li>
                         <li>Endereços</li>
                         <li>Cupons</li>
                     </ul>
@@ -142,11 +175,11 @@ export default function Cart(){
                
             </C.DivAddress>
             <>
-            { summary.map(i => <Summary name={i.name} image={i.image} price={i.price} id={i.id}  />) } 
+            { summaryData.map((i, index) => <Summary key={index} name={i.nameLower} image={i.image} price={i.value} id={i._id}  />) } 
             </ >
             <C.DivBase>                
                 <C.DivBaseTotal>
-                    <p>Total</p> <p>$ 00.00</p>
+                    <p>Total</p> <p>$ {plus}</p> 
                 </C.DivBaseTotal>
                 <Button />
             </C.DivBase>

@@ -1,30 +1,32 @@
 import React from "react"
 import Styled from 'styled-components';
 import Swal from 'sweetalert2'
- import axios from 'axios';
-
+import axios from 'axios';
+import { useContext, useState } from "react";
+import UserContext from "../Context/UserContext";
 export default function Button(){
- const tess1 = [{ ola:"pola"}]
- const tesss = 
-{ pr: [
-             {
-               price: "1000,50",
-               product: "car"
-             },
-              {
-               price: "1000,50",
-               product: "car"
-              }
-]}
+  const { login } = useContext(UserContext);
+ const token = login.token
+  const data = localStorage.getItem("cart");
+  const summaryData = JSON.parse(data);
+  
+ 
+const showUser = {
+ user: [
+ {
+ name: login.name,
+ email: login.email}
+ ],
+ products: summaryData }
+ 
 
-//console.log({...tesss, ...tess1})
 
   const order = 
   {
     price: "50,50",
     Product : "fone"
   }
-     let token = '49fd596f-51b7-454f-b219-e2c010d09720'
+     
       const config = {
         headers: {
         authorization: `Bearer${token}`,
@@ -40,14 +42,16 @@ export default function Button(){
         })
       }
     
-          axios.post('http://localhost:5000/cart', config, order)
+          axios.post('http://localhost:5000/cart', showUser)
           .then((res) =>{
+           
             Swal.fire({
               position: 'top-end',
               icon: 'success',
               title: 'Your work has been saved',
               showConfirmButton: false,
               timer: 3000
+              
             })
           })
           .catch((err) =>{
