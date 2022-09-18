@@ -19,7 +19,7 @@ function getProducts(){
 function getSearch(e){
     const promise=axios.get(`${BaseURL}/list/${e}`);
     return promise;
-
+}
 function checkoutRequest(body){
     return axios.post(`${APIprefix}/checkout`, body);
 
