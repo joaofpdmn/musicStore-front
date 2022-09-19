@@ -10,6 +10,8 @@ import Input from "../Common/Input";
 import Button from "../Common/Button";
 import { useContext, useState } from "react";
 import UserContext from "../Context/UserContext";
+import { checkoutRequest } from "../Services/UserServices";
+import { useNavigate } from "react-router-dom";
 
 export default function Checkout() {
     const { login } = useContext(UserContext);
@@ -17,6 +19,7 @@ export default function Checkout() {
     const [cardName, setCardName] = useState('');
     const [expirationDate, setExpirationDate] = useState('');
     const [securityCode, setSecurityCode] = useState('');
+    const navigate = useNavigate();
 
     function handleSubmit(e) {
         const confirmedCardNumber = login.cardNumber;
@@ -28,7 +31,14 @@ export default function Checkout() {
             securityCode,
             confirmedCardNumber
         };
-
+        const checkoutPromise = checkoutRequest(body);
+        checkoutPromise.then(response => {
+            alert('Compra confirmada! Estaremos retornando à tela inicial!');
+            navigate('/list');
+        }).catch(e => {
+            alert('Não foi possível realizar sua compra! Tente novamente mais tarde.');
+            console.log(e.error);
+        })
     }
 
     return (
