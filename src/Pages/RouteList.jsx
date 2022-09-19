@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { getProducts } from "../Services/UserServices.jsx";
  import{IoIosLogIn} from 'react-icons/io'
 export default function RouteList(){
+
  const navigate=useNavigate();
  const [search,setSearch]=useState("");
  const [product,setProduct]=useState([]);
@@ -13,6 +14,15 @@ export default function RouteList(){
  localStorage.setItem("cart", JSON.stringify(cart))
   
 
+
+
+   
+    
+    useEffect(()=>{getProducts().then((res)=>{
+        setProduct(res.data);
+       
+    }).catch((res)=>{console.log(res)});},[]);
+    
 
 
  useEffect(()=>{getProducts().then((res)=>{
@@ -59,6 +69,7 @@ export default function RouteList(){
  <ion-icon onClick={showCart} name="cart-outline"></ion-icon>
  
 
+
  </Top>
  
  <Container>
@@ -75,6 +86,9 @@ export default function RouteList(){
  </Box>))}
  </Container>
  </DivRouteList>);
+
+     
+
 }
 
 const DivRouteList=styled.div`

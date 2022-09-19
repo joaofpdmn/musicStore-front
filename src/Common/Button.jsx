@@ -13,6 +13,7 @@ align-items: center;
 font-weight: 700;
 font-size: 16px;
 margin-top: 10px;
+cursor: pointer;
 `
 
 export default Button;
