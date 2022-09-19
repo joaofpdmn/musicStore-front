@@ -1,27 +1,49 @@
-import React, { useState } from "react"
-import Styled from 'styled-components';
-import Button from "../components/button/Button"
-import { AiOutlineShoppingCart, AiOutlineDelete, AiOutlineArrowLeft, AiFillCheckSquare } from 'react-icons/ai';
+ 
+import Button from "../components/Button"
+import {  AiOutlineDelete, AiOutlineArrowLeft, AiFillCheckSquare } from 'react-icons/ai';
 import { BsChevronDown } from 'react-icons/bs';
+import { IoIosAddCircleOutline} from 'react-icons/io';
 import  {RiCheckboxBlankFill} from 'react-icons/ri'
 import Img  from '../assets/images/exemplo.png'
 import Swal from 'sweetalert2'
-
-
-
+import { useNavigate, Link } from "react-router-dom";
+import * as C from '../Common/CartStyles'
+import { useContext, useState } from "react";
+import UserContext from "../Context/UserContext";
 export default function Cart(){
-     
-    const [ summary, setSummary] = useState( [
-        {id: '1', name: 'Air pods max by Apple', price: "150", image:Img},
+  const { login } = useContext(UserContext);
+  
+  const navigate=useNavigate();
+     const [ summary, setSummary] = useState( [])
+     /*    {id: '1', name: 'Air pods max by Apple', price: "150", image:Img},
         {id: "2", name: 'Air pods max by Apple', price: "200", image:Img},
         {id: "3", name: 'Air pods max by Apple', price: "500", image:Img},     
-        ])
-    
-        
-    let remove = []
+        ])  */
+       const data = localStorage.getItem("cart");
+       const summaryData = JSON.parse(data);
+       
+ const teste = summaryData.map((i)=> i.value.replace(',', '.'))
+ 
+  const plus = teste.reduce(getTotal, 0);
+  localStorage.setItem("plus", plus);
+  function getTotal(total, item) {
+  return Number(total) + Number(item) ;
+ }
+ 
+
+
+     const showUser = {
+      user: [
+      {
+      name: login.name,
+      email: login.email}
+      ],
+      propucts: summaryData }
+         
+      
     
         function Summary (props){
-            
+           
         function FeleteItem (){
             Swal.fire({
                 title: 'Gostaria de excluir esse item?',
@@ -39,9 +61,11 @@ export default function Cart(){
                     'success'
                                   
                   )
-                  const filterId = summary.filter((item)=> item.id !== props.id)
+                  const filterId = summaryData.filter((item)=> item._id !== props.id)
                   setSummary(filterId)
+                 
                 }
+                
               })
           
         }
@@ -52,22 +76,22 @@ export default function Cart(){
       
         return(
             <>
-             
-             <DivSummary>
-                <DivCheckboxImg>
+            
+             <C.DivSummary>
+                <C.DivCheckboxImg>
                 {isOpen ? <AiFillCheckSquare   className="check" onClick={ toggle } /> : <RiCheckboxBlankFill className="Nocheck" onClick={toggle} />}
-                
-                    <img src={props.image} />
-                </DivCheckboxImg>
-                <DivName>               
+                 
+                    <img className="carImage" src={props.image} />
+                </C.DivCheckboxImg>
+                <C.DivName>               
                         <p>{props.name} </p>     
                         <p>$ {props.price}</p>                                                                                                    
-                </DivName>  
+                </C.DivName>  
                 <AiOutlineDelete onClick={ FeleteItem } className="delete" 
                     
                  />
              
-              </DivSummary> 
+              </C.DivSummary> 
              
             </>
             
@@ -75,158 +99,141 @@ export default function Cart(){
         
         
     }
+   const [ isMenu, setIsMenu] = useState(false)
+  
+   function showMenu (){
+
+    setIsMenu(!isMenu)
+  
+   }
+   const [newAddress, setNewAddress ] = useState([])
+   localStorage.setItem("newAddress", JSON.stringify(newAddress))
    
+       
+  async function btt ( ){
+    const { value: formValues } = await Swal.fire({
+        title: 'Multiple inputs',
+        html:
+          '<input required placeholder="Digite seu endereço" id="swal-input1" class="swal2-input">' 
+           ,
+        focusConfirm: false,
+        preConfirm: () => {
+            const address =   
+              (document.getElementById('swal-input1').value)
+              setNewAddress(address)
+          return address
+        }
+      })
+      
+      if (formValues) {
+        Swal.fire(JSON.stringify(formValues))
+      }
+   }
+   const [ showCard, setShowCard] = useState([])
+   localStorage.setItem("showCard", JSON.stringify(showCard))
+   console.log(showCard)
+  async function card (){
+    const { value: formValues } = await Swal.fire({
+      title: 'Multiple inputs',
+      html:
+        '<input type="number" id="swal-input1" class="swal2-input">' 
+        ,
+      focusConfirm: false,
+      preConfirm: () => {
+        const newCard = 
+          (document.getElementById('swal-input1').value)
+          setShowCard(newCard)
+          
+          return newCard  
+      }
+      
+    })
+    
+    
+    if (formValues) {
+      
+      
+      
+      Swal.fire({
+        position: 'top-end',
+        icon: 'success',
+        title: 'Cartão cadastrado com sucesso',
+        showConfirmButton: false,
+        timer: 1500
+      })
+    }
+  }
    
+  const getAddress = localStorage.getItem("newAddress");
+  const addAddress = JSON.parse(getAddress)
+  console.log(addAddress)
     return (
-        <Container>
-            <DivCart> 
-                <DivDisplayed>
-                    <AiOutlineArrowLeft/>
+        <C.Container>
+            <C.DivCart> 
+                <C.DivDisplayed>
+                    <AiOutlineArrowLeft  onClick={ ()=>{navigate('/') }}/>
                     <p>Seu Carrinho</p>
-                </DivDisplayed >
-                <AiOutlineShoppingCart className="car"/>
-            </DivCart >
-            <DivAddress>
-               <p>Endereço de Entrega:</p>
-               <p>Rua x Casa y Cep xxxyy-zz</p>
-               <BsChevronDown  />
-            </DivAddress>
+                    
+                </C.DivDisplayed >
+                {/* <GiHamburgerMenu onClick={showMenu} className="car"/>  */}         
+                <div className="index" onClick={showMenu}>
+                        <div className={isMenu ? "activeTablet" : "tablet"}/>
+                 </div>   
+                <C.Mobile isMenu={isMenu}>
+                    <ul className="subMenu">
+                       <Link to={'/'}>
+                       <li>Home</li>
+                       </Link> 
+                       
+                         <li onClick={()=> {
+                          if(!login.token){
+                            alert("faça login");
+                            return;
+                          }
+                          navigate('/requests')}
+                          }>Pedidos</li>
+                       
+                        <li onClick={()=> navigate('/checkout')}>Pagamentos</li>
+                        <li>Endereços</li>
+                        <li>Cupons</li>
+                    </ul>
+                </C.Mobile>
+
+            </C.DivCart >
+            <C.DivAddress>
+               <p>Novo Endereço:</p>
+               {addAddress}
+               <div className="pay"> 
+                 <IoIosAddCircleOutline className="add" onClick={btt}/>
+                 <button>meus endereços</button>
+               </div>
+                           
+            </C.DivAddress>
+            <C.DivAddress>
+               <p>Novo Cartão:</p>
+               
+               <div className="pay">
+                  <IoIosAddCircleOutline className="add" onClick={card}/>
+                  <button>Paypal</button> 
+               </div>
+                       
+            </C.DivAddress>
             <>
-            { summary.map(i => <Summary name={i.name} image={i.image} price={i.price} id={i.id}  />) } 
+            { summaryData.map((i, index) => <Summary key={index} name={i.nameLower} image={i.image} price={i.value} id={i._id}  />) } 
             </ >
-            <DivBase>                
-                <DivBaseTotal>
-                    <p>Total</p> <p>$ 00.00</p>
-                </DivBaseTotal>
+            <C.DivBase>                
+                <C.DivBaseTotal>
+                    <p>Total</p> <p>$ {plus}</p> 
+                </C.DivBaseTotal>
                 <Button />
-            </DivBase>
+            </C.DivBase>
            
-        </Container>
+        </C.Container>
 
          
     )
+   
 }
 
-const Container = Styled.div`
-    width: 100%;
-    min-height: 100vh;
-    background-color:#fff;
-    
-`
-const DivDisplayed = Styled.div`
-    width: 100%;
-    display: flex;
-    align-items: center
-    justify-content: center;
-    gap:20px;
-   
-   
-`
+ 
 
-const DivBaseTotal = Styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap:266px;
-    margin-top: 14px;
-    font-family: 'Inter';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 17px;
-    color: #393F42;
-
-`
-const DivBase = Styled.div`
-    width: 100%;
-    position: fixed;
-    bottom: 0px;
-    //gap:20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    border-top:2px solid #F0F2F1;
-    margin-bottom: 30px;
-    
-` 
-const DivCart = Styled.div`
-    //width: 375px;
-    height: 45px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 20px;
-    //gap: 120px; 
-    font-family: 'Inter';
-    font-style: normal;
-    font-weight: 500;
-    font-size: 16px;
-    line-height: 19px;
-    color: #393F42;
-    padding:10px;
-    padding-left: 20px;
-    padding-right: 35px;
-    .car{
-      color:  #393F42;
-       font-size:25px;
-    }
-`
-const DivAddress = Styled(DivCart)`
-    //gap:30px;
-    font-family: 'Inter';
-    font-style: normal;
-    font-weight: 500;
-    font-size: 14px;
-    line-height: 17px;
-    color: #393F42;
-    border-top:2px solid #F0F2F1;
-    border-bottom:2px solid #F0F2F1;
-    justify-content: space-between;
-    
-`
-const DivSummary = Styled.div`
-   display:flex;
-   align-items: center;
-   justify-content: space-between;
-   weight:100%;
-   padding:20px;
-   padding-left: 20px;
-   padding-right: 20px;
-   .delete{
-        cursor: pointer; 
-        width: 24px;
-        height: 24px;
-        background: #FFFFFF;
-        border: 10px solid #F0F2F1;
-        border-radius: 50px;
-    }
-  
-`
-const DivCheckboxImg =  Styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap:20px;
-    margin-right: 10px;
-    .check{
-        color: #67C4A7;
-        cursor: pointer; 
-        font-size: 30px;
-        border-radius: 19px;
-     }
-     .Nocheck{
-        cursor: pointer; 
-        font-size: 30px;
-        border:none;
-        color: #E5E5E5;
-     }
-    
-`
-
-const DivName = Styled.div`
-    display: flex;
-    flex-direction: column;
-    margin-right: 30px;
-    gap:20px;
-    `

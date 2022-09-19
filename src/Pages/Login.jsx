@@ -21,7 +21,7 @@ export default function Login() {
             password: password,
             token: ''
         };
-        const loginPromise = loginRequest(body);
+        const loginPromise = loginRequest(body)
         loginPromise.then(response => {
             setLogin(response.data);
             setUserData(response.data);
