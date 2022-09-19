@@ -27,7 +27,7 @@ export default function Login() {
             setUserData(response.data);
             localStorage.setItem('myToken', response.data.token);
             alert('Login realizado com sucesso!');
-            navigate(`/checkout`);
+            navigate(`/home`);
         }).catch(e => {
             console.log(e);
             alert('Login inválido!');

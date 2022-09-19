@@ -52,7 +52,7 @@ export default function RouteList(){
                 <img src={e.image}/>
                 <LittleBox>
                      <h1>{e.name}</h1>
-                    <h2>${e.value}</h2>
+                    <h2>${e.price}</h2>
                     <Buttons>
                         <ButtonAdd onClick={()=>{add(e)}}><h3>Add to cart</h3></ButtonAdd>
                         <ButtonRemove onClick={()=>{remove(e)}} ><h4>Remove</h4></ButtonRemove>

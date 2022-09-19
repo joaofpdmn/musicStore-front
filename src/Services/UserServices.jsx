@@ -9,15 +9,27 @@ function signUpRequest(body){
     return axios.post(`${APIprefix}/signup`, body);
 }
 function getProducts(){
-    const promise=axios.get(`${BaseURL}/list`);
+    const token = localStorage.getItem('myToken');
+    const config = {
+        headers: { Authorization: `Bearer ${token}` }
+    };
+    const promise=axios.get(`${APIprefix}/list`, config);
     return promise;
 }
 function getSearch(e){
-    const promise=axios.get(`${BaseURL}/list/${e}`);
+    const token = localStorage.getItem('myToken');
+    const config = {
+        headers: { Authorization: `Bearer ${token}` }
+    };
+    const promise=axios.get(`${APIprefix}/list/${e}`, config);
     return promise;
 }
 function checkoutRequest(body){
-    return axios.post(`${APIprefix}/checkout`, body);
+    const token = localStorage.getItem('myToken');
+    const config = {
+        headers: { Authorization: `Bearer ${token}` }
+    };
+    return axios.post(`${APIprefix}/checkout`, body, config);
 }
 
 export { 
