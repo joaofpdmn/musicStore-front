@@ -11,7 +11,8 @@ export default function RouteList(){
     const [itens,setItens]=useState(cart.length);
     
     useEffect(()=>{getProducts().then((res)=>{
-        setProduct(res.data)
+        setProduct(res.data);
+        console.log(product);
     }).catch((res)=>{console.log(res)});},[]);
     console.log(cart);
 
