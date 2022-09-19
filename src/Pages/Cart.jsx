@@ -24,12 +24,13 @@ export default function Cart(){
        
  const teste = summaryData.map((i)=> i.value.replace(',', '.'))
  
- const plus = teste.reduce(getTotal, 0);
- function getTotal(total, item) {
+  const plus = teste.reduce(getTotal, 0);
+  localStorage.setItem("plus", plus);
+  function getTotal(total, item) {
   return Number(total) + Number(item) ;
  }
  
- 
+
 
      const showUser = {
       user: [
@@ -106,7 +107,9 @@ export default function Cart(){
   
    }
    const [newAddress, setNewAddress ] = useState([])
+   localStorage.setItem("newAddress", JSON.stringify(newAddress))
    
+       
   async function btt ( ){
     const { value: formValues } = await Swal.fire({
         title: 'Multiple inputs',
@@ -126,12 +129,44 @@ export default function Cart(){
         Swal.fire(JSON.stringify(formValues))
       }
    }
-
-  function home (){
-    navigate('/cart')
+   const [ showCard, setShowCard] = useState([])
+   localStorage.setItem("showCard", JSON.stringify(showCard))
+   console.log(showCard)
+  async function card (){
+    const { value: formValues } = await Swal.fire({
+      title: 'Multiple inputs',
+      html:
+        '<input type="number" id="swal-input1" class="swal2-input">' 
+        ,
+      focusConfirm: false,
+      preConfirm: () => {
+        const newCard = 
+          (document.getElementById('swal-input1').value)
+          setShowCard(newCard)
+          
+          return newCard  
+      }
+      
+    })
+    
+    
+    if (formValues) {
+      
+      
+      
+      Swal.fire({
+        position: 'top-end',
+        icon: 'success',
+        title: 'Cartão cadastrado com sucesso',
+        showConfirmButton: false,
+        timer: 1500
+      })
+    }
   }
    
-  
+  const getAddress = localStorage.getItem("newAddress");
+  const addAddress = JSON.parse(getAddress)
+  console.log(addAddress)
     return (
         <C.Container>
             <C.DivCart> 
@@ -166,13 +201,22 @@ export default function Cart(){
 
             </C.DivCart >
             <C.DivAddress>
-               <p>Endereço de Entrega:</p>
-               {newAddress}
-                
+               <p>Novo Endereço:</p>
+               {addAddress}
+               <div className="pay"> 
+                 <IoIosAddCircleOutline className="add" onClick={btt}/>
+                 <button>meus endereços</button>
+               </div>
+                           
+            </C.DivAddress>
+            <C.DivAddress>
+               <p>Novo Cartão:</p>
                
-              
-               <IoIosAddCircleOutline className="add" onClick={btt}/>
-               
+               <div className="pay">
+                  <IoIosAddCircleOutline className="add" onClick={card}/>
+                  <button>Paypal</button> 
+               </div>
+                       
             </C.DivAddress>
             <>
             { summaryData.map((i, index) => <Summary key={index} name={i.nameLower} image={i.image} price={i.value} id={i._id}  />) } 
@@ -188,6 +232,7 @@ export default function Cart(){
 
          
     )
+   
 }
 
  

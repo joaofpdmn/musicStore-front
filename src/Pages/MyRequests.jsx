@@ -73,7 +73,8 @@ export default function MyRequests(){
             
              <C.DivSummary>
                 <C.DivCheckboxImg>
-                    <img className="carImage" src={props.image} />
+                  <p>{props.image} </p>
+                  
                 </C.DivCheckboxImg>
                 <C.DivName>               
                         <p>{props.name} </p>     
@@ -133,8 +134,8 @@ export default function MyRequests(){
             </C.DivAddress>
             <>
             { summary.map((i, index) => (
-                < span key={index} >{i.products.map((item, index)=>(
-                    <Summary key={index} name={item.nameLower} image={item.image} price={item.value} id={item.id}
+                < span key={index} >{i.details.map((item, index)=>(
+                    <Summary key={index} name={item.card} image={item.addCard} price={item.addPlus} id={item.id}
            
             />
                 ))}</span>

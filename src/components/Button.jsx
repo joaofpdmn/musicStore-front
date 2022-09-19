@@ -9,17 +9,34 @@ export default function Button(){
  const token = login.token
   const data = localStorage.getItem("cart");
   const summaryData = JSON.parse(data);
+  const getCard = localStorage.getItem("showCard");
+  const addCard = JSON.parse(getCard)
+  const getAddress = localStorage.getItem("newAddress");
+  const addAddress = JSON.parse(getAddress)
+  const getPlus = localStorage.getItem("plus");
+  const addPlus = JSON.parse(getPlus)
+  
   
  
 const showUser = {
  user: [
  {
  name: login.name,
- email: login.email}
+ email: login.email,
+}
  ],
- products: summaryData }
+ details: [
+  {
+  card: addCard,
+  addCard: addCard,
+  addPlus: addPlus,
  
-
+ }
+  ],
+ products: summaryData
+ }
+ 
+console.log(showUser)
 
   const order = 
   {
@@ -37,7 +54,24 @@ const showUser = {
         return Swal.fire({
           icon: 'error',
           title: 'Oops...',
-          text: 'Something went wrong!',
+          text: 'faça login!',
+          footer: '<a href="">Why do I have this issue?</a>'
+        })
+      }
+      if (!addCard.length || !addAddress.length ){
+        return Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Cadastre Cartão e Endereço !',
+          footer: '<a href="">Why do I have this issue?</a>'
+        })
+         
+      }
+      if (!summaryData.length){
+        return Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Adicione ao Menos um item ao Carrinho !',
           footer: '<a href="">Why do I have this issue?</a>'
         })
       }
@@ -58,7 +92,7 @@ const showUser = {
             Swal.fire({
               position: 'top-end',
               icon: 'error',
-              title: 'Your work has been saved',
+              title: 'erro do servidor',
               showConfirmButton: false,
               timer: 3000
             })

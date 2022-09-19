@@ -191,8 +191,16 @@ export const DivAddress = Styled(DivCart)`
     .add{
       width: 25px;
       height: 25px;
-      color: #000;
-      
+      color: #000;     
+    }
+    .pay{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+       
+
     }
 `
 export const DivSummary = Styled.div`
